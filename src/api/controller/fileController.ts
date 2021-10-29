@@ -3,6 +3,7 @@ import { UploadedFile } from "express-fileupload";
 import { Configs } from "../../configs";
 import { v4 as uuidv4 } from "uuid";
 import logger from "../../utils/logger";
+import { ModelService } from "../../services/ModelService";
 
 async function _upload(req: Request, res: Response, next: NextFunction) {
   try {
@@ -20,6 +21,9 @@ async function _upload(req: Request, res: Response, next: NextFunction) {
 
       uploadedFile.mv(Configs.uploadPath + fileName);
 
+      const modelService = new ModelService();
+      const result = await modelService.requestForOutput(fileName);
+
       res.send({
         status: true,
         message: "File is uploaded",
@@ -28,6 +32,7 @@ async function _upload(req: Request, res: Response, next: NextFunction) {
           mimetype: uploadedFile.mimetype,
           size: uploadedFile.size,
         },
+        result: result,
       });
     }
   } catch (err) {

@@ -20,4 +20,5 @@ export const Configs = {
     ],
   },
   uploadPath: process.env.UPLOAD_PATH,
+  modelURL: process.env.MODEL_URL,
 };
